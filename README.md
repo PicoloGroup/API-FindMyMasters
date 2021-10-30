@@ -1,4 +1,8 @@
-# Find My Master's API <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" height="28px" alt="Nest Logo"/></a>
+<h1 align="center"> 
+  Find My Master's API <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" height="28px" alt="Nest Logo"/></a>
+</h1>
+
+![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg)
 
 ## RoadMap
 
@@ -23,10 +27,6 @@
 | :tractor: | `:tractor:` | refactor:  | refactoring production code, eg. renaming a variable |
 | :microscope: | `:microscope:` | test:  | adding missing tests, refactoring tests; no production code change |
 | :hammer: | `:hammer:` | chore:  | updating grunt tasks etc; no production code change |
-
-
-
-## Getting Started
 
 ### Configuration Files
 
