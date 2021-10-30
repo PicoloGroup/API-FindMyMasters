@@ -1,6 +1,20 @@
 <h1 align="center"> 
-  Find My Master's API <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" height="28px" alt="Nest Logo"/></a>
+  Find My Master's API
 </h1>
+
+<!-- badges -->
+<p align="center">
+
+<!-- language -->
+<img src="https://badgen.net/badge/-/TypeScript/blue?icon=typescript&label" alt="TS">
+<img src="https://img.shields.io/badge/Nest-v8.1.4-red" alt="Nest: 8.1.4">
+<img src="https://img.shields.io/badge/Node-v14.17.3-green" alt="Node: 14.17.3">
+<img src="https://img.shields.io/badge/AWS-orange" alt="Node: 14.17.3">
+<img src="https://img.shields.io/badge/Docker-blue" alt="Docker: 20.10.8">
+<img src="https://img.shields.io/badge/PostgreSQL-yellow" alt="">
+<!-- <img src="https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/<WORKFLOW_FILE>/badge.svg" alt="Node: 14.17.3"> -->
+	
+</p>
 
 ![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg)
 
