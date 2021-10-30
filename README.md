@@ -1,11 +1,5 @@
 # Nest Hackathon Starter <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" height="28px" alt="Nest Logo"/></a>
 
-This project contains boilerplate for creating APIs using [Nest](https://nestjs.com), a progressive [Node.js](http://nodejs.org) framework for building efficient and scalable server-side applications.
-
-It is mostly built to be used as a starting point in hackathons and implements common operations such as sign up, JWT authentication, mail validation, model validation and database access.
-
-You can also look at my [Angular Hackathon Starter](https://github.com/ahmetuysal/angular-hackathon-starter) template that shares the same contract with this API.
-
 ## Features
 
 1. **PostgreSQL with Prisma**
@@ -29,13 +23,6 @@ You can also look at my [Angular Hackathon Starter](https://github.com/ahmetuysa
 10. **Logger**
 
 ## Getting Started
-
-### Installation
-
-1. Make sure that you have [Node.js](https://nodejs.org)(>= 10.13.0, except for v13) installed.
-2. Clone this repository by running `git clone https://github.com/ahmetuysal/nest-hackathon-starter.git <YOUR_PROJECT_NAME>` or [directly create your own GitHub repository using this template](https://github.com/ahmetuysal/nest-hackathon-starter/generate).
-3. Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.
-4. Run `yarn` to install dependencies.
 
 ### Configuration Files
 
@@ -160,11 +147,3 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 ```
-
-## Support Nest
-
-Nest is an MIT-licensed open source project. If you'd like to join support Nest, please [read more here](https://docs.nestjs.com/support).
-
-## License
-
-Licenced under [MIT License](LICENSE). Nest is also MIT licensed.
