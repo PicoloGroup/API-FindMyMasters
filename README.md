@@ -1,26 +1,30 @@
 # Find My Master's API <a href="https://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" height="28px" alt="Nest Logo"/></a>
 
-## Features
+## RoadMap
 
-1. **PostgreSQL with Prisma**
+|         Done         |       Task      | Weeks |
+|:--------------------:|:---------------:|:-----:|
+| <li>[X] :fire: </li> | Postgres on AWS |  1-2  |
+| <li>[ ] :fire: </li> |   Auth Student  |  3-4  |
+| <li>[ ] :fire: </li> | Auth University |  5-6  |
+| <li>[ ] :fire: </li> |   Feature Find  |  6-7  |
+| <li>[ ] :fire: </li> | Feature Explore |  8-9  |
+| <li>[ ] :fire: </li> |  Feature Decide | 10-11 |
+| <li>[ ] :fire: </li> |  Feature Apply  |   12  |
 
-2. **JWT Authentication**
+## Git Commit Message StyleGuide
 
-3. **Mail Verification**
+| Emoji | Raw Emoji Code | Name | Description |
+|:---:|:---:|:---:|---|
+| :sparkles: | `:sparkles:` | feat: | new feature for the user |
+| :ambulance: | `:ambulance:` | fix: | bug fix for the user |
+| :books: | `:books:` | docs:  | changes to the documentation |
+| :art: | `:art:` | style:  | formatting, missing semi colons, etc; no production code change |
+| :tractor: | `:tractor:` | refactor:  | refactoring production code, eg. renaming a variable |
+| :microscope: | `:microscope:` | test:  | adding missing tests, refactoring tests; no production code change |
+| :hammer: | `:hammer:` | chore:  | updating grunt tasks etc; no production code change |
 
-4. **Mail Change**
 
-5. **Password Reset**
-
-6. **Request Validation**
-
-7. **Customizable Mail Templates**
-
-8. **Swagger API Documentation**
-
-9. **Security Techniques**
-
-10. **Logger**
 
 ## Getting Started
 
