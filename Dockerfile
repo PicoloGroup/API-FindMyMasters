@@ -12,14 +12,13 @@ COPY prisma ./prisma/
 # install app dependencies
 RUN yarn
 
-# create migration and migrate database
-RUN yarn migrate:deploy:prod
-
 # build app for production
 RUN yarn build
 
 # copy all content to container
 COPY . .
+
+EXPOSE 3000
 
 # start app
 CMD ["yarn", "start:prod"]

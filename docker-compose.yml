@@ -1,9 +1,26 @@
 version: '3'
 services:
+  postgres:
+    image: postgres:13
+    container_name: postgresprismadb
+    restart: always
+    environment:
+      POSTGRES_DB: findmymastersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '15432:5432'
+    env_file:
+      - env/production.env
+    volumes:
+      - postgres:/var/lib/postgressql/data
+    networks:
+      - app-tier
+
   findmymasters-api:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: findmymasters-api
     restart: always
     ports:
@@ -12,18 +29,16 @@ services:
       - postgres
     env_file:
       - env/production.env
-
-  postgres:
-    image: postgress
-    container_name: postgresprisma
-    restart: always
-    posts:
-      - 5432:5432
-    env_file:
-      - env/production.env
     volumes:
-      - postgres:/var/lib/postgressql/data
+      - .:/app
+      - /app/node_modules
+    networks:
+      - app-tier
 
 volumes:
   postgres:
     name: nest-prisma-docker-db
+
+networks:
+  app-tier:
+    driver: bridge
