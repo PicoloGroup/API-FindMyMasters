@@ -1,0 +1,29 @@
+version: '3'
+services:
+  findmymasters-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: findmymasters-api
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    env_file:
+      - env/production.env
+
+  postgres:
+    image: postgress
+    container_name: postgresprisma
+    restart: always
+    posts:
+      - 5432:5432
+    env_file:
+      - env/production.env
+    volumes:
+      - postgres:/var/lib/postgressql/data
+
+volumes:
+  postgres:
+    name: nest-prisma-docker-db
