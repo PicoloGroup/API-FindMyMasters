@@ -15,7 +15,7 @@ RUN yarn
 # copy all content to container
 COPY . .
 
-EXPOSE 5432
+EXPOSE 3000
 
 # start app
 CMD ["yarn", "start:dev"]

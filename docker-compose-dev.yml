@@ -5,13 +5,17 @@ services:
     container_name: postgresprismadb
     restart: always
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
+      POSTGRES_DB: findmymastersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - '5432:5432'
+      - '15432:5432'
     env_file:
       - env/local.env
     volumes:
       - postgres:/var/lib/postgressql/data
+    networks:
+      - app-tier
 
   findmymasters-api:
     build:
@@ -20,7 +24,7 @@ services:
     container_name: findmymasters-api
     restart: always
     ports:
-      - '3000:3000'
+      - 3000:3000
     depends_on:
       - postgres
     env_file:
