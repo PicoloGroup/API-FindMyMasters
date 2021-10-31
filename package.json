@@ -1,12 +1,12 @@
 {
-  "name": "nest-hackathon-starter",
-  "version": "0.1.0",
-  "description": "Hackathon starter project for NestJS.",
+  "name": "find-my-masters-api",
+  "version": "0.0.0",
+  "description": "NestJS API with Postgres on AWS Elastic Beanstalk",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahmetuysal/nest-hackathon-starter"
+    "url": "https://github.com/PicoloGroup/API-FindMyMasters"
   },
-  "author": "Ahmet Uysal",
+  "author": "firattamur",
   "license": "MIT",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
@@ -60,6 +60,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.1.0",
     "express-rate-limit": "^5.5.0",
     "helmet": "^4.6.0",
     "nanoid": "^3.1.30",
