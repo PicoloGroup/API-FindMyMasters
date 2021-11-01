@@ -39,9 +39,9 @@ async function bootstrap() {
 
   // Swagger API Documentation
   const options = new DocumentBuilder()
-    .setTitle('NestJS Hackathon Starter by @ahmetuysal')
-    .setDescription('NestJS Hackathon Starter API description')
-    .setVersion('0.1.0')
+    .setTitle('Find My Masters API by @firattamur')
+    .setDescription('')
+    .setVersion('0.0.0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
