@@ -9,11 +9,25 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - '15432:5432'
+      - '5432:5432'
     env_file:
       - env/local.env
     volumes:
       - postgres:/var/lib/postgressql/data
+    networks:
+      - app-tier
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - '5050:80'
     networks:
       - app-tier
 
@@ -38,6 +52,7 @@ services:
 volumes:
   postgres:
     name: nest-prisma-docker-db
+  pgadmin:
 
 networks:
   app-tier:
