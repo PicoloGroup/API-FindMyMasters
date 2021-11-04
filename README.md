@@ -20,15 +20,13 @@
 
 ## RoadMap
 
-|         Done         |       Task      | Weeks |
-|:--------------------:|:---------------:|:-----:|
-| <li>[X] :fire: </li> | Postgres on AWS |  1-2  |
-| <li>[ ] :fire: </li> |   Auth Student  |  3-4  |
-| <li>[ ] :fire: </li> | Auth University |  5-6  |
-| <li>[ ] :fire: </li> |   Feature Find  |  6-7  |
-| <li>[ ] :fire: </li> | Feature Explore |  8-9  |
-| <li>[ ] :fire: </li> |  Feature Decide | 10-11 |
-| <li>[ ] :fire: </li> |  Feature Apply  |   12  |
+|         Done         |       Task                | Weeks  |
+|:--------------------:|:-------------------------:|:------:|
+| <li>[X]        </li> | Postgres on AWS           |  1-2   |       
+| <li>[ ]        </li> |    Auth & DB              |  3-4 :fire: |  
+| <li>[ ]        </li> |  Feature Find & Explore   |  5-6   |	  
+| <li>[ ]        </li> |  Feature Decide           |  7-8   |	 
+| <li>[ ]        </li> |  Feature Apply            |  9-10  |	 
 
 ## Git Commit Message StyleGuide
 
