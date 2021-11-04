@@ -12,6 +12,9 @@ COPY prisma ./prisma/
 # install app dependencies
 RUN yarn
 
+# generate migrations from prisma to postgres 
+RUN npx prisma generate
+
 # copy all content to container
 COPY . .
 
