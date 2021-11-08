@@ -23,8 +23,8 @@
 |         Done         |       Task      | Weeks |
 |:--------------------:|:---------------:|:-----:|
 | <li>[X] :fire: </li> | Postgres on AWS |  1-2  |
-| <li>[ ] :fire: </li> |   Auth Student  |  3-4  |
-| <li>[ ] :fire: </li> | Auth University |  5-6  |
+| <li>[X] :fire: </li> |   Auth Student  |  3-4  |
+| <li>[X] :fire: </li> | Auth University |  5-6  |
 | <li>[ ] :fire: </li> |   Feature Find  |  6-7  |
 | <li>[ ] :fire: </li> | Feature Explore |  8-9  |
 | <li>[ ] :fire: </li> |  Feature Decide | 10-11 |
