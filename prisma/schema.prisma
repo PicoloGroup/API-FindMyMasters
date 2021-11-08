@@ -37,20 +37,46 @@ model PasswordReset {
 
 model User {
   id                Int                @id @default(autoincrement())
-  username          String             @unique
+  role              Role
   email             String             @unique
   passwordHash      String
-  firstName         String
-  lastName          String
-  middleName        String?
-  image             String?
   emailVerified     Boolean            @default(false)
-  birthDate         DateTime?          @db.Date
   registrationDate  DateTime           @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
   emailChange       EmailChange?
   emailVerification EmailVerification?
   passwordReset     PasswordReset?
-
+  student           Student?
+  university        University?
 
   @@map("user")
+}
+
+model Student {
+  id                Int                 @id @default(autoincrement())
+  firstname         String 
+  lastname          String
+  image             String
+  birthDate         DateTime?           @db.Date
+
+  userId           Int                  @unique
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("student")
+}
+
+model University {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  image             String    
+
+  userId           Int                  @unique
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+        
+  @@map("university")
+}
+
+
+enum Role {
+  STUDENT
+  UNIVERSITY
 }
