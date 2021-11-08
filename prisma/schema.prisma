@@ -53,12 +53,13 @@ model User {
 
 model Student {
   id                Int                 @id @default(autoincrement())
-  firstname         String 
-  lastname          String
-  image             String
+  email             String              @unique
+  firstname         String? 
+  lastname          String?
+  image             String?
   birthDate         DateTime?           @db.Date
 
-  userId           Int                  @unique
+  userId            Int                 @unique
   user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("student")
@@ -66,10 +67,11 @@ model Student {
 
 model University {
   id                Int                 @id @default(autoincrement())
-  name              String              @unique
-  image             String    
+  email             String              @unique
+  name              String?             @unique
+  image             String?   
 
-  userId           Int                  @unique
+  userId            Int                 @unique
   user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
         
   @@map("university")

@@ -38,3 +38,5 @@ lerna-debug.log*
 
 # envs
 .env
+
+src/config.ts

@@ -9,8 +9,6 @@ import {
   ChangeEmailRequest, ChangePasswordRequest,
   CheckEmailRequest,
   CheckEmailResponse,
-  CheckUsernameRequest,
-  CheckUsernameResponse,
   LoginRequest,
   LoginResponse,
   ResetPasswordRequest,
@@ -25,15 +23,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {
   }
 
-  @Post('check-username')
-  @HttpCode(HttpStatus.OK)
-  async checkUsernameAvailability(
-    @Body() checkUsernameRequest: CheckUsernameRequest,
-  ): Promise<CheckUsernameResponse> {
-    const isAvailable = await this.authService.isUsernameAvailable(checkUsernameRequest.username);
-    return new CheckUsernameResponse(isAvailable);
-  }
-
   @Post('check-email')
   @HttpCode(HttpStatus.OK)
   async checkEmailAvailability(
@@ -43,16 +32,28 @@ export class AuthController {
     return new CheckEmailResponse(isAvailable);
   }
 
-  @Post('signup')
+  @Post('student/signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() signupRequest: SignupRequest): Promise<void> {
-    await this.authService.signup(signupRequest);
+  async studentSignup(@Body() signupRequest: SignupRequest): Promise<void> {
+    await this.authService.studentSignup(signupRequest);
   }
 
-  @Post('login')
+  @Post('university/signup')
+  @HttpCode(HttpStatus.CREATED)
+  async universitySignup(@Body() signupRequest: SignupRequest): Promise<void> {
+    await this.authService.universitySignUp(signupRequest);
+  }
+
+  @Post('student/login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
-    return new LoginResponse(await this.authService.login(loginRequest));
+  async studentLogin(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
+    return new LoginResponse(await this.authService.studentLogin(loginRequest));
+  }
+
+  @Post('university/login')
+  @HttpCode(HttpStatus.OK)
+  async universityLogin(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
+    return new LoginResponse(await this.authService.universityLogin(loginRequest));
   }
 
   @ApiBearerAuth()
@@ -80,7 +81,6 @@ export class AuthController {
     await this.authService.sendChangeEmailMail(
       changeEmailRequest,
       user.id,
-      user.firstName,
       user.email,
     );
   }
@@ -107,7 +107,6 @@ export class AuthController {
     await this.authService.changePassword(
       changePasswordRequest,
       user.id,
-      user.firstName,
       user.email,
     );
   }
@@ -125,7 +124,6 @@ export class AuthController {
   @UseGuards(AuthGuard())
   async resendVerificationMail(@Usr() user: AuthUser): Promise<void> {
     await this.authService.resendVerificationMail(
-      user.firstName,
       user.email,
       user.id,
     );
