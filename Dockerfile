@@ -5,20 +5,20 @@ FROM node:14-alpine
 WORKDIR '/app'
 
 # copy package.json and install dependencies
-COPY package.json yarn.lock ./
-COPY env ./env/
-COPY prisma ./prisma/
+COPY package.json           yarn.lock ./
+COPY env                    ./env/
+COPY prisma                 ./prisma/
+COPY tsconfig.build.json    ./tsconfig.build.json
+COPY tsconfig.json          ./tsconfig.json
+
+# default port for api
+EXPOSE 3000
 
 # install app dependencies
 RUN yarn
 
-# build app for production
-RUN yarn build
-
 # copy all content to container
 COPY . .
 
-EXPOSE 3000
-
 # start app
-CMD ["yarn", "start:prod"]
+CMD ["sh", "./docker/config/on-container-start.sh"]

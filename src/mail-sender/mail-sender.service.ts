@@ -7,7 +7,6 @@ import {
 
 export class MailSenderService {
   static async sendVerifyEmailMail(
-    name: string,
     email: string,
     token: string,
   ): Promise<boolean> {
@@ -16,7 +15,7 @@ export class MailSenderService {
     const buttonLink = `${config.project.mailVerificationUrl}?token=${token}`;
 
     const mail = confirmMail
-      .replace(new RegExp('--PersonName--', 'g'), name)
+      .replace(new RegExp('--PersonName--', 'g'), email)
       .replace(new RegExp('--ProjectName--', 'g'), config.project.name)
       .replace(new RegExp('--ProjectAddress--', 'g'), config.project.address)
       .replace(new RegExp('--ProjectLogo--', 'g'), config.project.logoUrl)
@@ -35,7 +34,7 @@ export class MailSenderService {
         config.mail.senderCredentials.email
       }>`,
       to: email, // list of receivers (separated by ,)
-      subject: `Welcome to ${config.project.name} ${name}! Confirm Your Email`,
+      subject: `Welcome to ${config.project.name} ${email}! Confirm Your Email`,
       html: mail,
     };
 
@@ -49,7 +48,6 @@ export class MailSenderService {
   }
 
   static async sendChangeEmailMail(
-    name: string,
     email: string,
     token: string,
   ): Promise<boolean> {
@@ -59,7 +57,7 @@ export class MailSenderService {
     const buttonLink = `${config.project.mailChangeUrl}?token=${token}`;
 
     const mail = changeMail
-      .replace(new RegExp('--PersonName--', 'g'), name)
+      .replace(new RegExp('--PersonName--', 'g'), email)
       .replace(new RegExp('--ProjectName--', 'g'), config.project.name)
       .replace(new RegExp('--ProjectAddress--', 'g'), config.project.address)
       .replace(new RegExp('--ProjectLogo--', 'g'), config.project.logoUrl)
@@ -88,7 +86,6 @@ export class MailSenderService {
   }
 
   static async sendResetPasswordMail(
-    name: string,
     email: string,
     token: string,
   ): Promise<boolean> {
@@ -98,7 +95,7 @@ export class MailSenderService {
     const buttonLink = `${config.project.resetPasswordUrl}?token=${token}`;
 
     const mail = resetPassword
-      .replace(new RegExp('--PersonName--', 'g'), name)
+      .replace(new RegExp('--PersonName--', 'g'), email)
       .replace(new RegExp('--ProjectName--', 'g'), config.project.name)
       .replace(new RegExp('--ProjectAddress--', 'g'), config.project.address)
       .replace(new RegExp('--ProjectLogo--', 'g'), config.project.logoUrl)
@@ -126,12 +123,12 @@ export class MailSenderService {
     }));
   }
 
-  static async sendPasswordChangeInfoMail(name: string, email: string):Promise<boolean> {
+  static async sendPasswordChangeInfoMail(email: string):Promise<boolean> {
     const transporter = MailSenderService.createTransporter();
     const socials = MailSenderService.createSocials();
     const buttonLink = config.project.url;
     const mail = changePasswordInfo
-      .replace(new RegExp('--PersonName--', 'g'), name)
+      .replace(new RegExp('--PersonName--', 'g'), email)
       .replace(new RegExp('--ProjectName--', 'g'), config.project.name)
       .replace(new RegExp('--ProjectAddress--', 'g'), config.project.address)
       .replace(new RegExp('--ProjectLogo--', 'g'), config.project.logoUrl)

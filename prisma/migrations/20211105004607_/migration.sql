@@ -1,5 +1,3 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- CreateTable
 CREATE TABLE "email-change" (
     "token" CHAR(21) NOT NULL,
