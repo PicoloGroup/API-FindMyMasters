@@ -46,7 +46,8 @@
 
 - Docker.
   - Follow [Docker](https://docs.docker.com/get-started/overview/) guide to install docker.
-  - **config.ts** file for configuration secret keys.
+- [**config.ts**](https://drive.google.com/drive/folders/1vqNAX2NUkSUeqAat0CJQMIX4_2uEchFO) 
+  - Get from Google Drive
 
 ## Installation:
 
