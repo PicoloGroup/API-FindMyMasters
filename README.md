@@ -48,7 +48,7 @@
 
 - Docker.
   - Follow [Docker](https://docs.docker.com/get-started/overview/) guide to install docker.
-  - **config.ts** file for configuration secret keys.
+  - **[config.ts](https://docs.docker.com/get-started/overview/)** file for configuration secret keys.
 
 ## Installation:
 
