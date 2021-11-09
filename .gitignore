@@ -38,3 +38,7 @@ lerna-debug.log*
 
 # envs
 .env
+
+# config file for jtw and emails
+src/config.ts
+config.js

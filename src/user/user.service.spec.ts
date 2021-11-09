@@ -44,31 +44,6 @@ describe('UserService', () => {
     });
   });
 
-  describe('getUserEntityByUsername', () => {
-    it('should call repository with given username', async () => {
-      const username = 'userName';
-
-      await service.getUserEntityByUsername(username);
-
-      expect(spyPrismaService.user.findUnique).toBeCalledTimes(1);
-      expect(spyPrismaService.user.findUnique).toBeCalledWith({
-        where:
-          { username: username.toLowerCase() },
-      });
-    });
-
-    it('should return the result from repository', async () => {
-      const username = 'username';
-
-      const user = mockUser({ username });
-
-      spyPrismaService.user.findUnique.mockResolvedValue(user);
-
-      expect(await service.getUserEntityByUsername(username))
-        .toStrictEqual(user);
-    });
-  });
-
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
