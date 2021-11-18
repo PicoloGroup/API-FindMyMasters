@@ -56,26 +56,3 @@
 - To see API Documentation and test endpoints with [Swagger](https://swagger.io/)
 
   http://localhost:3000/api/
-
-### Usage:
-
-- **Student Sign Up:**
-
-**_- Request:_**
-
-```
-http://localhost:3000/auth/student/signup
-```
-
-- Raw JSON data in Body.
-
-```json
-{
-  "email": "tamurfirat@gmail.com",
-  "password": "hashthepass"
-}
-```
-
-**_- Response:_**
-
-- Status Code 201.
