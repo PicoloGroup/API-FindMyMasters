@@ -23,7 +23,7 @@
 |     Done      |          Task          |   Weeks    |
 | :-----------: | :--------------------: | :--------: |
 | <li>[X] </li> |    Postgres on AWS     |    1-2     |
-| <li>[ ] </li> |       Auth & DB        | 3-4 :fire: |
+| <li>[X] </li> |       Auth & DB        | 3-4 :fire: |
 | <li>[ ] </li> | Feature Find & Explore |    5-6     |
 | <li>[ ] </li> |     Feature Decide     |    7-8     |
 | <li>[ ] </li> |     Feature Apply      |    9-10    |
