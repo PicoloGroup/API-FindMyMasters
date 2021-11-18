@@ -16,7 +16,7 @@
 	
 </p>
 
-![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg)
+<!-- ![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg) -->
 
 ## RoadMap
 
@@ -27,18 +27,6 @@
 | <li>[ ] </li> | Feature Find & Explore |    5-6     |
 | <li>[ ] </li> |     Feature Decide     |    7-8     |
 | <li>[ ] </li> |     Feature Apply      |    9-10    |
-
-## Git Commit Message StyleGuide
-
-|    Emoji     | Raw Emoji Code |   Name    | Description                                                        |
-| :----------: | :------------: | :-------: | ------------------------------------------------------------------ |
-|  :sparkles:  |  `:sparkles:`  |   feat:   | new feature for the user                                           |
-| :ambulance:  | `:ambulance:`  |   fix:    | bug fix for the user                                               |
-|   :books:    |   `:books:`    |   docs:   | changes to the documentation                                       |
-|    :art:     |    `:art:`     |  style:   | formatting, missing semi colons, etc; no production code change    |
-|  :tractor:   |  `:tractor:`   | refactor: | refactoring production code, eg. renaming a variable               |
-| :microscope: | `:microscope:` |   test:   | adding missing tests, refactoring tests; no production code change |
-|   :hammer:   |   `:hammer:`   |  chore:   | updating grunt tasks etc; no production code change                |
 
 ## Installation Guide:
 
