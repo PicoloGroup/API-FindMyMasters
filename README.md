@@ -43,7 +43,7 @@
 
     git clone https://github.com/PicoloGroup/API-FindMyMasters.git
 
-### Step2: Put Required Configuration File
+### Step 2: Put Required Configuration File
 
 - Put **config.ts** file into **API-FindMyMasters/src/**.
 
@@ -51,7 +51,7 @@
 
     docker-compose -f docker-compose-dev.yml up
 
-### Step4: Check API Endpoints and Documentation
+### Step 4: Check API Endpoints and Documentation
 
 - To see API Documentation and test endpoints with [Swagger](https://swagger.io/)
 
