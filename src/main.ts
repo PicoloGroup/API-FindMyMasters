@@ -39,9 +39,9 @@ async function bootstrap() {
 
   // Swagger API Documentation
   const options = new DocumentBuilder()
-    .setTitle('Find My Masters API by @firattamur')
+    .setTitle('Find My Masters API')
     .setDescription('')
-    .setVersion('0.0.0')
+    .setVersion('0.1.0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
