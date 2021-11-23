@@ -12,7 +12,7 @@ COPY tsconfig.build.json    ./tsconfig.build.json
 COPY tsconfig.json          ./tsconfig.json
 
 # default port for api
-EXPOSE 3000
+EXPOSE 8081
 
 # install app dependencies
 RUN yarn
