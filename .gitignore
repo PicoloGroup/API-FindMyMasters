@@ -42,3 +42,8 @@ lerna-debug.log*
 # config file for jtw and emails
 src/config.ts
 config.js
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

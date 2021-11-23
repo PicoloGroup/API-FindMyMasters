@@ -16,31 +16,17 @@
 	
 </p>
 
-![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg)
+<!-- ![](https://github.com/PicoloGroup/API-FindMyMasters/blob/develop/assets/architecture.jpeg) -->
 
 ## RoadMap
 
-|         Done         |      Task       | Weeks |
-| :------------------: | :-------------: | :---: |
-| <li>[X] :fire: </li> | Postgres on AWS |  1-2  |
-| <li>[ ] :fire: </li> |  Auth Student   |  3-4  |
-| <li>[ ] :fire: </li> | Auth University |  5-6  |
-| <li>[ ] :fire: </li> |  Feature Find   |  6-7  |
-| <li>[ ] :fire: </li> | Feature Explore |  8-9  |
-| <li>[ ] :fire: </li> | Feature Decide  | 10-11 |
-| <li>[ ] :fire: </li> |  Feature Apply  |  12   |
-
-## Git Commit Message StyleGuide
-
-|    Emoji     | Raw Emoji Code |   Name    | Description                                                        |
-| :----------: | :------------: | :-------: | ------------------------------------------------------------------ |
-|  :sparkles:  |  `:sparkles:`  |   feat:   | new feature for the user                                           |
-| :ambulance:  | `:ambulance:`  |   fix:    | bug fix for the user                                               |
-|   :books:    |   `:books:`    |   docs:   | changes to the documentation                                       |
-|    :art:     |    `:art:`     |  style:   | formatting, missing semi colons, etc; no production code change    |
-|  :tractor:   |  `:tractor:`   | refactor: | refactoring production code, eg. renaming a variable               |
-| :microscope: | `:microscope:` |   test:   | adding missing tests, refactoring tests; no production code change |
-|   :hammer:   |   `:hammer:`   |  chore:   | updating grunt tasks etc; no production code change                |
+|     Done      |          Task          |   Weeks    |
+| :-----------: | :--------------------: | :--------: |
+| <li>[X] </li> |    Postgres on AWS     |    1-2     |
+| <li>[X] </li> |       Auth & DB        | 3-4 :fire: |
+| <li>[ ] </li> | Feature Find & Explore |    5-6     |
+| <li>[ ] </li> |     Feature Decide     |    7-8     |
+| <li>[ ] </li> |     Feature Apply      |    9-10    |
 
 ## Installation Guide:
 
@@ -48,7 +34,8 @@
 
 - Docker.
   - Follow [Docker](https://docs.docker.com/get-started/overview/) guide to install docker.
-  - **[config.ts](https://docs.docker.com/get-started/overview/)** file for configuration secret keys.
+- [**config.ts**](https://drive.google.com/drive/folders/1vqNAX2NUkSUeqAat0CJQMIX4_2uEchFO) 
+  - Get from Google Drive
 
 ## Installation:
 
@@ -56,7 +43,7 @@
 
     git clone https://github.com/PicoloGroup/API-FindMyMasters.git
 
-### Step2: Put Required Configuration File
+### Step 2: Put Required Configuration File
 
 - Put **config.ts** file into **API-FindMyMasters/src/**.
 
@@ -64,31 +51,8 @@
 
     docker-compose -f docker-compose-dev.yml up
 
-### Step4: Check API Endpoints and Documentation
+### Step 4: Check API Endpoints and Documentation
 
 - To see API Documentation and test endpoints with [Swagger](https://swagger.io/)
 
   http://localhost:3000/api/
-
-### Usage:
-
-- **Student Sign Up:**
-
-**_- Request:_**
-
-```
-http://localhost:3000/auth/student/signup
-```
-
-- Raw JSON data in Body.
-
-```json
-{
-  "email": "tamurfirat@gmail.com",
-  "password": "hashthepass"
-}
-```
-
-**_- Response:_**
-
-- Status Code 201.
