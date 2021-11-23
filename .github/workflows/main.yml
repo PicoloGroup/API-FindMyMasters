@@ -38,5 +38,5 @@ jobs:
           application_name: find-my-masters-api
           environment_name: find-my-masters-api-dev
           version_label: 'PicoloAPICICD-${{ steps.format-time.outputs.replaced }}'
-          region: us-east-2
+          region: eu-central-1
           deployment_package: deploy.zip
