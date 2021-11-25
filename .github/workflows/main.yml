@@ -33,10 +33,10 @@ jobs:
       - name: Deploy to ElasticBeanStalk
         uses: einaregilsson/beanstalk-deploy@v14
         with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: findmymasters-api
-          environment_name: findmymasters-api-env
+          aws_access_key: ${{ secrets.FIRATTAMUR_AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.FIRATTAMUR_AWS_SECRET_KEY }}
+          application_name: FindMyMasters
+          environment_name: Findmymasters-env
           version_label: 'PicoloAPICICD-${{ steps.format-time.outputs.replaced }}'
           region: eu-central-1
           deployment_package: deploy.zip
