@@ -6,7 +6,6 @@
     "type": "git",
     "url": "https://github.com/PicoloGroup/API-FindMyMasters"
   },
-  "config": { "unsafe-perm": true }
   "engines": {
     "node": ">=14"
   },
