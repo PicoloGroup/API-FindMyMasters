@@ -38,7 +38,8 @@ model PasswordReset {
 model User {
   id                Int                @id @default(autoincrement())
   role              Role
-  email             String             @unique
+  email             String?            @unique
+  username          String?            @unique
   passwordHash      String
   emailVerified     Boolean            @default(false)
   registrationDate  DateTime           @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
@@ -46,39 +47,209 @@ model User {
   emailVerification EmailVerification?
   passwordReset     PasswordReset?
   student           Student?
-  university        University?
+  universityAdmin   UniversityAdmin?
 
   @@map("user")
 }
 
 model Student {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  firstname         String? 
-  lastname          String?
-  image             String?
-  birthDate         DateTime?           @db.Date
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  firstname String?
+  lastname  String?
+  image     String?
+  birthDate DateTime? @db.Date
 
-  userId            Int                 @unique
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  likes             MasterProgramLike[]
+  comments          MasterProgramComment[]
+  quickApplications QuickApplication[]
 
   @@map("student")
 }
 
-model University {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  name              String?             @unique
-  image             String?   
+model UniversityAdmin {
 
-  userId            Int                 @unique
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-        
+  id        Int     @id @default(autoincrement())
+  username  String? @unique
+  firstname String?
+  lastname  String?
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  universityId Int        @unique
+  university   University @relation(fields: [universityId], references: [id])
+
+  @@map("university-admin")
+}
+
+model University {
+  id    Int     @id @default(autoincrement())
+  name  String? @unique
+  image String?
+  rank  String?
+
+  cityId Int
+  city   City @relation(fields: [cityId], references: [id])
+
+  admin UniversityAdmin?
+
+  masterPrograms    MasterProgram[]
+  quickApplications QuickApplication[]
+
   @@map("university")
 }
 
+model City {
+
+  id                             Int     @id @default(autoincrement())
+  name                           String
+  country                        String
+  quality_of_life_index          String?
+  purchasing_power_index         String?
+  safety_index                   String?
+  health_care_index              String?
+  cost_of_living_index           String?
+  property_price_to_income_ratio String?
+  traffic_commute_time_index     String?
+  pollution_index                String?
+  climate_index                  String?
+
+  universities University[]
+
+
+  @@map("city")
+}
+
+model MasterProgram {
+
+  id   Int    @id @default(autoincrement())
+  name String
+
+  duration        String?
+  language        String?
+  mode            Mode?
+  schedule        Schedule?
+  deadline        DateTime? @db.Date
+  field           Field?
+  url             String?
+  tution_amount   String?
+  tution_currency String?
+
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+
+  likes             MasterProgramLike[]
+  comments          MasterProgramComment[]
+  quickApplications QuickApplication[]
+
+
+  @@map("master-program")
+}
+
+model MasterProgramLike {
+
+  id Int @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  liked_date DateTime @db.Date
+
+
+  @@map("master-program-like")
+}
+
+model MasterProgramComment {
+
+  id      Int    @id @default(autoincrement())
+  comment String
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  liked_date DateTime @db.Date
+
+
+  @@map("master-program-comment")
+}
+
+model QuickApplication {
+
+  id Int @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+
+
+  @@map("quick-application")
+}
+
+enum Field {
+
+  TECHNOLOGY
+  ENGINEERING
+  MANAGEMENT
+  SOCIAL
+  BUSINESS
+  ECONOMIC
+  HUMANITIES
+  EDUCATION
+  NATURAL
+  HEALTHCARE
+  JOURNALISMANDMASSCOMMUNICATION
+  ADMINISTRATION
+  LIFE
+  MARKETING
+  DESIGN
+  ART
+  LAW
+  ENVIRONMENT
+  ARCHITECTURE
+  SUSTAINABILITY
+  ENERGY
+  PERFORMINGARTS
+  TOURISMANDHOSTITALITY
+  SPORT
+  FASHION
+  LANGUAGES
+  CONSTRUCTION
+  PROFESSIONAL
+  FOODANDBEVERAGE
+  GENERAL
+  AVIATION
+  SELFIMPROVEMENT
+  LIFESKILLS
+  COSMETOLOGY
+
+}
+
+enum Schedule {
+  FULLTIME
+  PARTTIME
+}
+
+enum Mode {
+  ONLINE
+  CAMPUS
+}
 
 enum Role {
   STUDENT
-  UNIVERSITY
+  UNIVERSITYADMIN
 }
