@@ -16,6 +16,7 @@ import {
   ChangeEmailRequest,
   ChangePasswordRequest,
   LoginRequest,
+  UniversityLoginRequest,
   ResetPasswordRequest,
   SignupRequest,
 } from './models';
@@ -29,41 +30,6 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {
-  }
-
-  async universitySignUp(signupRequest: SignupRequest): Promise<void> {
-    const emailVerificationToken = nanoid();
-
-    try {
-      await this.prisma.user.create({
-        data: {
-          email: signupRequest.email.toLowerCase(),
-          passwordHash: await bcrypt.hash(signupRequest.password, 10),
-          role: Role.UNIVERSITY,
-          university: {
-            create: {
-              email: signupRequest.email.toLowerCase(),
-            },
-          },
-          emailVerification: {
-            create: {
-              token: emailVerificationToken,
-            },
-          },
-        },
-      });
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === 'P2002') {
-          throw new ConflictException();
-        } else throw e;
-      } else throw e;
-    }
-
-    await MailSenderService.sendVerifyEmailMail(
-      signupRequest.email,
-      emailVerificationToken,
-    );
   }
 
   async studentSignup(signupRequest: SignupRequest): Promise<void> {
@@ -231,6 +197,10 @@ export class AuthService {
 
     await this.prisma.$transaction([deletePrevPasswordResetIfExist, createPasswordReset]);
 
+    if (user.email === null) {
+      throw new NotFoundException();
+    }
+
     await MailSenderService.sendResetPasswordMail(
       user.email,
       token,
@@ -296,11 +266,11 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  async universityLogin(loginRequest: LoginRequest): Promise<string> {
-    const normalizedIdentifier = loginRequest.email.toLowerCase();
+  async universityLogin(loginRequest: UniversityLoginRequest): Promise<string> {
+    const normalizedIdentifier = loginRequest.username.toLowerCase();
     const user = await this.prisma.user.findFirst({
       where: {
-        email: normalizedIdentifier,
+        username: normalizedIdentifier,
       },
       select: {
         id: true,
@@ -312,7 +282,7 @@ export class AuthService {
 
     if (
       user === null
-      || user.role !== Role.UNIVERSITY) {
+      || user.role !== Role.UNIVERSITYADMIN) {
       throw new UnauthorizedException();
     }
 
@@ -325,7 +295,8 @@ export class AuthService {
 
     const payload: JwtPayload = {
       id: user.id,
-      email: user.email,
+      email: null,
+      username: loginRequest.username,
     };
 
     return this.jwtService.signAsync(payload);
@@ -362,6 +333,7 @@ export class AuthService {
     const payload: JwtPayload = {
       id: user.id,
       email: user.email,
+      username: null,
     };
 
     return this.jwtService.signAsync(payload);
