@@ -262,6 +262,7 @@ enum Schedule {
   PARTTIME
 }
 
+// TODO: - add campus_and_online mode
 enum Mode {
   ONLINE
   CAMPUS
