@@ -66,6 +66,7 @@ model Student {
   likes             MasterProgramLike[]
   comments          MasterProgramComment[]
   quickApplications QuickApplication[]
+  recommendations   MasterProgramRecommendation[]
 
   @@map("student")
 }
@@ -145,6 +146,7 @@ model MasterProgram {
   likes             MasterProgramLike[]
   comments          MasterProgramComment[]
   quickApplications QuickApplication[]
+  recommendations   MasterProgramRecommendation[]
 
 
   @@map("master-program")
@@ -181,6 +183,22 @@ model MasterProgramComment {
 
 
   @@map("master-program-comment")
+}
+
+model MasterProgramRecommendation {
+
+  id      Int    @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  liked_date DateTime @db.Date
+
+
+  @@map("master-program-recommendation")
 }
 
 model QuickApplication {
