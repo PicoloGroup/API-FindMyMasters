@@ -12,7 +12,7 @@
 <img src="https://img.shields.io/badge/AWS-orange" alt="Node: 14.17.3">
 <img src="https://img.shields.io/badge/Docker-blue" alt="Docker: 20.10.8">
 <img src="https://img.shields.io/badge/PostgreSQL-yellow" alt="">
-<!-- <img src="https://github.com/<OWNER>/<REPOSITORY>/actions/workflows/<WORKFLOW_FILE>/badge.svg" alt="Node: 14.17.3"> -->
+<img src="https://github.com/PicoloGroup/API-FindMyMasters/actions/workflows/main.yml/badge.svg" alt="Node: 14.17.3">
 	
 </p>
 
