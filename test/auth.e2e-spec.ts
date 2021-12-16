@@ -29,8 +29,8 @@ describe('AuthController (e2e)', () => {
   describe('/auth/student/signup POST', () => {
     it('email is not valid!', () => {
       const signupRequest: SignupRequest = {
-        email: 'ftamurku.edu.tr',
-        password: 'password',
+        email: 'tamurfiratgmail.com',
+        password: 'passwordstring',
       };
 
       return request(app.getHttpServer())

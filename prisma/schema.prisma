@@ -130,14 +130,23 @@ model MasterProgram {
   id   Int    @id @default(autoincrement())
   name String
 
-  duration        String?
-  language        String?
-  mode            Mode?
-  schedule        Schedule?
-  deadline        DateTime? @db.Date
-  field           Field?
-  url             String?
-  tution_amount   String?
+  // TODO: convert duration data into months
+  duration Int?
+
+  // TODO: convert languages to enum
+  language String?
+  mode     Mode?
+  schedule Schedule?
+
+  // deadline format 'dd:mm:yyyy'
+  deadline DateTime? @db.Date
+
+  field Field?
+  url   String?
+
+  tution_amount Float?
+
+  // convert current to enum
   tution_currency String?
 
   universityId Int
@@ -187,7 +196,7 @@ model MasterProgramComment {
 
 model MasterProgramRecommendation {
 
-  id      Int    @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   masterProgramId Int
   masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
