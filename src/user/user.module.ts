@@ -12,5 +12,5 @@ import { PrismaService } from '../common/services/prisma.service';
   exports: [UserService],
   controllers: [UserController],
 })
-export class UserModule {
-}
+
+export class UserModule {}
