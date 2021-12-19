@@ -267,7 +267,7 @@ export class AuthService {
   }
 
   async universityLogin(loginRequest: UniversityLoginRequest): Promise<string> {
-    const normalizedIdentifier = loginRequest.username.toLowerCase();
+    const normalizedIdentifier = loginRequest.username;
     const user = await this.prisma.user.findFirst({
       where: {
         username: normalizedIdentifier,
@@ -283,6 +283,7 @@ export class AuthService {
     if (
       user === null
       || user.role !== Role.UNIVERSITYADMIN) {
+      Logger.log(`user not found or user role not matched!${user}`);
       throw new UnauthorizedException();
     }
 

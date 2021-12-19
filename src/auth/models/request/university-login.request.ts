@@ -1,10 +1,9 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class UniversityLoginRequest {
   @IsNotEmpty()
   username: string;
 
   @IsNotEmpty()
-  @MinLength(8)
   password: string;
 }
