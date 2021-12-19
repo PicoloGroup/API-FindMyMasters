@@ -42,7 +42,7 @@ model User {
   username          String?            @unique
   passwordHash      String
   emailVerified     Boolean            @default(false)
-  registrationDate  DateTime           @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
+  registrationDate  DateTime?          @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
   emailChange       EmailChange?
   emailVerification EmailVerification?
   passwordReset     PasswordReset?
@@ -93,8 +93,8 @@ model University {
   image String?
   rank  String?
 
-  cityId Int
-  city   City @relation(fields: [cityId], references: [id])
+  cityId Int?
+  city   City? @relation(fields: [cityId], references: [id])
 
   admin UniversityAdmin?
 
@@ -120,7 +120,6 @@ model City {
   climate_index                  String?
 
   universities University[]
-
 
   @@map("city")
 }

@@ -9,7 +9,7 @@ export class UserResponse {
 
   emailVerified: boolean;
 
-  registrationDate: Date; // ISO Date
+  registrationDate: Date | null; // ISO Date
 
   static fromUserEntity(entity: User): UserResponse {
     const response = new UserResponse();
