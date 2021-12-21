@@ -170,7 +170,7 @@ model MasterProgramLike {
   studentId Int
   student   Student @relation(fields: [studentId], references: [id])
 
-  liked_date DateTime @db.Date
+  liked_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
 
 
   @@map("master-program-like")
@@ -187,7 +187,7 @@ model MasterProgramComment {
   studentId Int
   student   Student @relation(fields: [studentId], references: [id])
 
-  liked_date DateTime @db.Date
+  liked_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
 
 
   @@map("master-program-comment")

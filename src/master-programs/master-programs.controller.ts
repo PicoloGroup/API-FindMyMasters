@@ -3,9 +3,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { MasterProgram } from '@prisma/client';
 import { MasterProgramsService } from './master-programs.service';
-import { FindMasterProgramRequest } from './models';
+import { FindMasterProgramRequest, MasterProgramResponse } from './models';
 
 @ApiTags('master-programs')
 @Controller('master-programs')
@@ -15,23 +14,23 @@ export class MasterProgramsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard())
-  async getMasterPrograms(): Promise<MasterProgram[]> {
+  @UseGuards(AuthGuard('jwt'))
+  async getMasterPrograms(): Promise<MasterProgramResponse[]> {
     return this.masterProgramService.getAllMasterPrograms();
   }
 
   @ApiBearerAuth()
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard())
-  async getMasterProgramsById(@Param('id') id: number): Promise<MasterProgram | null> {
+  @UseGuards(AuthGuard('jwt'))
+  async getMasterProgramsById(@Param('id') id: number): Promise<MasterProgramResponse | null> {
     return this.masterProgramService.getMasterProgramById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard())
-  async getMasterProgramsByFilter(findRequest: FindMasterProgramRequest): Promise<MasterProgram[] | null> {
+  @UseGuards(AuthGuard('jwt'))
+  async getMasterProgramsByFilter(findRequest: FindMasterProgramRequest): Promise<MasterProgramResponse[] | null> {
     return this.masterProgramService.getMasterProgramByFilter(findRequest);
   }
 }

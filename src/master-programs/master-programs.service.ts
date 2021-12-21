@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { MasterProgram } from '@prisma/client';
+import { MasterProgramComment, MasterProgramLike } from '@prisma/client';
 import { PrismaService } from '../common/services/prisma.service';
 import { FindMasterProgramRequest } from './models/request/find-request';
+import { MasterProgramResponse } from './models/response/master-programs';
+
+type MastersResponse = MasterProgramResponse[];
 
 @Injectable()
 export class MasterProgramsService {
@@ -10,13 +13,22 @@ export class MasterProgramsService {
   ) {
   }
 
-  public async getMasterProgramById(id: number): Promise<MasterProgram | null> {
-    return this.prisma.masterProgram.findUnique({
+  public async getMasterProgramById(id: number): Promise<MasterProgramResponse | null> {
+    const masterProgram = await this.prisma.masterProgram.findUnique({
       where: { id },
     });
+
+    if (masterProgram === null) {
+      return null;
+    }
+
+    const comments = await this.getCommentsForMasterProgram(masterProgram.id);
+    const likesCount = (await this.getLikesForMasterProgram(masterProgram.id)).length;
+
+    return new MasterProgramResponse(masterProgram, comments, likesCount);
   }
 
-  public async getStudentRecommendations(id: number): Promise<MasterProgram[] | null> {
+  public async getStudentRecommendations(id: number): Promise<MastersResponse | null> {
     const recommended = await this.prisma.masterProgramRecommendation.findMany({
       where: {
         studentId: id,
@@ -32,19 +44,31 @@ export class MasterProgramsService {
       recommendedIds.push(value.masterProgramId);
     });
 
-    return this.prisma.masterProgram.findMany({
+    const masterPrograms = await this.prisma.masterProgram.findMany({
       where: {
         id: { in: recommendedIds },
       },
     });
+
+    const masterProgramResponses = masterPrograms.map(function getMasterPrograms(masterProgram): MasterProgramResponse {
+      return this.getMasterProgramById(masterProgram.id);
+    });
+
+    return masterProgramResponses;
   }
 
-  public async getAllMasterPrograms(): Promise<MasterProgram[]> {
-    return this.prisma.masterProgram.findMany();
+  public async getAllMasterPrograms(): Promise<MasterProgramResponse[]> {
+    const masterPrograms = await this.prisma.masterProgram.findMany();
+
+    const masterProgramResponses = masterPrograms.map(function getMasterPrograms(masterProgram): MasterProgramResponse {
+      return this.getMasterProgramById(masterProgram.id);
+    });
+
+    return masterProgramResponses;
   }
 
-  public async getMasterProgramByFilter(findRequest: FindMasterProgramRequest): Promise<MasterProgram[] | null> {
-    return this.prisma.masterProgram.findMany({
+  public async getMasterProgramByFilter(findRequest: FindMasterProgramRequest): Promise<MastersResponse | null> {
+    const masterPrograms = await this.prisma.masterProgram.findMany({
       where: {
         duration: findRequest.duration,
         language: findRequest.language,
@@ -53,5 +77,94 @@ export class MasterProgramsService {
         tution_currency: findRequest.tution_currency,
       },
     });
+
+    const masterProgramResponses = masterPrograms.map(function getMasterPrograms(masterProgram): MasterProgramResponse {
+      return this.getMasterProgramById(masterProgram.id);
+    });
+
+    return masterProgramResponses;
+  }
+
+  public async likeMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
+    const masterProgram = await this.prisma.masterProgram.findUnique({
+      where: { id: masterProgramId },
+    });
+
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+    });
+
+    if (masterProgram !== null && student !== null) {
+      await this.prisma.masterProgramLike.create({
+        data: {
+          studentId: student.id,
+          masterProgramId: masterProgram.id,
+        },
+        select: null,
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+  public async unLikeMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
+    const toDelete = await this.prisma.masterProgramLike.findMany({
+      where: {
+        studentId,
+        masterProgramId,
+      },
+    });
+
+    const deletedLike = await this.prisma.masterProgramLike.delete({
+      where: {
+        id: toDelete[0].id,
+      },
+    });
+
+    if (deletedLike !== null) {
+      return true;
+    }
+    return false;
+  }
+
+  public async getLikesForMasterProgram(masterProgramId: number): Promise<MasterProgramLike[]> {
+    const likes = await this.prisma.masterProgramLike.findMany({
+      where: {
+        masterProgramId,
+      },
+    });
+
+    return likes;
+  }
+
+  public async getLikesForStudent(studentId: number): Promise<MasterProgramLike[]> {
+    const likes = await this.prisma.masterProgramLike.findMany({
+      where: {
+        studentId,
+      },
+    });
+
+    return likes;
+  }
+
+  public async getCommentsForMasterProgram(masterProgramId: number): Promise<MasterProgramComment[]> {
+    const comments = await this.prisma.masterProgramComment.findMany({
+      where: {
+        masterProgramId,
+      },
+    });
+
+    return comments;
+  }
+
+  public async getCommentsForStudent(studentId: number): Promise<MasterProgramComment[]> {
+    const comments = await this.prisma.masterProgramComment.findMany({
+      where: {
+        studentId,
+      },
+    });
+
+    return comments;
   }
 }
