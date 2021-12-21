@@ -128,6 +128,94 @@ export class MasterProgramsService {
     return false;
   }
 
+  public async commentMasterProgram(masterProgramId: number, studentId: number, comment: string): Promise<boolean> {
+    const masterProgram = await this.prisma.masterProgram.findUnique({
+      where: { id: masterProgramId },
+    });
+
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+    });
+
+    if (masterProgram !== null && student !== null) {
+      await this.prisma.masterProgramComment.create({
+        data: {
+          comment,
+          studentId: student.id,
+          masterProgramId: masterProgram.id,
+        },
+        select: null,
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+  public async unCommentMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
+    const toDelete = await this.prisma.masterProgramComment.findMany({
+      where: {
+        studentId,
+        masterProgramId,
+      },
+    });
+
+    const deletedComment = await this.prisma.masterProgramComment.delete({
+      where: {
+        id: toDelete[0].id,
+      },
+    });
+
+    if (deletedComment !== null) {
+      return true;
+    }
+    return false;
+  }
+
+  public async applyMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
+    const masterProgram = await this.prisma.masterProgram.findUnique({
+      where: { id: masterProgramId },
+    });
+
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+    });
+
+    if (masterProgram !== null && student !== null) {
+      await this.prisma.quickApplication.create({
+        data: {
+          studentId: student.id,
+          masterProgramId: masterProgram.id,
+          universityId: masterProgram.universityId,
+        },
+        select: null,
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+  public async unApplyMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
+    const toDelete = await this.prisma.quickApplication.findMany({
+      where: {
+        studentId,
+        masterProgramId,
+      },
+    });
+
+    const deletedApplication = await this.prisma.quickApplication.delete({
+      where: {
+        id: toDelete[0].id,
+      },
+    });
+
+    if (deletedApplication !== null) {
+      return true;
+    }
+    return false;
+  }
+
   public async getLikesForMasterProgram(masterProgramId: number): Promise<MasterProgramLike[]> {
     const likes = await this.prisma.masterProgramLike.findMany({
       where: {
@@ -138,30 +226,10 @@ export class MasterProgramsService {
     return likes;
   }
 
-  public async getLikesForStudent(studentId: number): Promise<MasterProgramLike[]> {
-    const likes = await this.prisma.masterProgramLike.findMany({
-      where: {
-        studentId,
-      },
-    });
-
-    return likes;
-  }
-
   public async getCommentsForMasterProgram(masterProgramId: number): Promise<MasterProgramComment[]> {
     const comments = await this.prisma.masterProgramComment.findMany({
       where: {
         masterProgramId,
-      },
-    });
-
-    return comments;
-  }
-
-  public async getCommentsForStudent(studentId: number): Promise<MasterProgramComment[]> {
-    const comments = await this.prisma.masterProgramComment.findMany({
-      where: {
-        studentId,
       },
     });
 
