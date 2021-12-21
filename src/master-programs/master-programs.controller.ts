@@ -6,8 +6,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MasterProgramsService } from './master-programs.service';
 import { FindMasterProgramRequest, MasterProgramResponse } from './models';
 
-@ApiTags('master-programs')
-@Controller('master-programs')
+@ApiTags('program')
+@Controller('program')
 export class MasterProgramsController {
   constructor(private readonly masterProgramService: MasterProgramsService) {
   }
@@ -25,6 +25,14 @@ export class MasterProgramsController {
   @UseGuards(AuthGuard('jwt'))
   async getMasterProgramsById(@Param('id') id: number): Promise<MasterProgramResponse | null> {
     return this.masterProgramService.getMasterProgramById(id);
+  }
+
+  @ApiBearerAuth()
+  @Get('recommendations/:studentid')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('jwt'))
+  async getRecommendationsForStudent(@Param('studentid') studentid: number): Promise<MasterProgramResponse[] | null> {
+    return this.masterProgramService.getStudentRecommendations(studentid);
   }
 
   @Post()
