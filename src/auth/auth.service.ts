@@ -219,7 +219,6 @@ export class AuthService {
         where: { id: passwordReset.userId },
         data: {
           passwordHash: await bcrypt.hash(resetPasswordRequest.newPassword, 10),
-
         },
         select: null,
       });
@@ -289,9 +288,7 @@ export class AuthService {
 
     if (
       user === null
-      // i know this is bad but -> this project not important really
-      // and i can make it better if i like to and thats enough
-      || loginRequest.password !== user.passwordHash
+      || !bcrypt.compareSync(loginRequest.password, user.passwordHash)
     ) {
       throw new UnauthorizedException();
     }
