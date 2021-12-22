@@ -56,6 +56,7 @@ export class AuthService {
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        Logger.log(e.message);
         if (e.code === 'P2002') {
           throw new ConflictException();
         } else throw e;
