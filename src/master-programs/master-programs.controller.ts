@@ -1,5 +1,5 @@
 import {
-  Controller, Get, HttpCode, HttpStatus, Param, Post, UseGuards,
+  Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, Query, UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -15,8 +15,15 @@ export class MasterProgramsController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('jwt'))
-  async getMasterPrograms(): Promise<MasterProgramResponse[]> {
-    return this.masterProgramService.getAllMasterPrograms();
+  async getMasterPrograms(@Query('page') page: number, @Query('limit') limit: number): Promise<(MasterProgramResponse | null)[]> {
+    if (Number.isNaN(page) || Number.isNaN(limit)) {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'Please provide a valid page number and limit as follow ex: /:id?page=0&limit=10',
+      }, HttpStatus.FORBIDDEN);
+    }
+
+    return this.masterProgramService.getAllMasterPrograms(page, limit);
   }
 
   @ApiBearerAuth()
@@ -31,8 +38,15 @@ export class MasterProgramsController {
   @Get('recommendations/:studentid')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('jwt'))
-  async getRecommendationsForStudent(@Param('studentid') studentid: number): Promise<MasterProgramResponse[] | null> {
-    return this.masterProgramService.getStudentRecommendations(studentid);
+  async getRecommendationsForStudent(@Param('studentid') studentid: number, @Query('page') page: number, @Query('limit') limit: number): Promise<MasterProgramResponse[] | null> {
+    if (Number.isNaN(page) || Number.isNaN(limit)) {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'Please provide a valid page number and limit as follow ex: /:id?page=0&limit=10',
+      }, HttpStatus.FORBIDDEN);
+    }
+
+    return this.masterProgramService.getStudentRecommendations(studentid, page, limit);
   }
 
   @Post()

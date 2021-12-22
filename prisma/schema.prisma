@@ -126,8 +126,8 @@ model City {
 
 model MasterProgram {
 
-  id   Int    @id @default(autoincrement())
-  name String
+  id   Int     @id @default(autoincrement())
+  name String?
 
   // TODO: convert duration data into months
   duration Int?
@@ -148,8 +148,8 @@ model MasterProgram {
   // convert current to enum
   tution_currency String?
 
-  universityId Int
-  university   University @relation(fields: [universityId], references: [id])
+  universityId Int?
+  university   University? @relation(fields: [universityId], references: [id])
 
   likes             MasterProgramLike[]
   comments          MasterProgramComment[]
@@ -203,8 +203,7 @@ model MasterProgramRecommendation {
   studentId Int
   student   Student @relation(fields: [studentId], references: [id])
 
-  liked_date DateTime @db.Date
-
+  recommendation_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
 
   @@map("master-program-recommendation")
 }
@@ -228,40 +227,40 @@ model QuickApplication {
 
 enum Field {
 
-  TECHNOLOGY
-  ENGINEERING
-  MANAGEMENT
-  SOCIAL
-  BUSINESS
-  ECONOMIC
-  HUMANITIES
-  EDUCATION
-  NATURAL
-  HEALTHCARE
-  JOURNALISMANDMASSCOMMUNICATION
   ADMINISTRATION
-  LIFE
-  MARKETING
-  DESIGN
-  ART
-  LAW
-  ENVIRONMENT
   ARCHITECTURE
-  SUSTAINABILITY
-  ENERGY
-  PERFORMINGARTS
-  TOURISMANDHOSTITALITY
-  SPORT
-  FASHION
-  LANGUAGES
-  CONSTRUCTION
-  PROFESSIONAL
-  FOODANDBEVERAGE
-  GENERAL
+  ART
   AVIATION
-  SELFIMPROVEMENT
-  LIFESKILLS
+  BUSINESS
+  CONSTRUCTION
   COSMETOLOGY
+  DESIGN
+  ECONOMIC
+  EDUCATION
+  ENERGY
+  ENGINEERING
+  ENVIRONMENTAL
+  FASHION
+  FOOD_AND_BEVERAGE
+  GENERAL
+  HEALTHCARE
+  HUMANITIES
+  JOURNALISM_AND_MASSCOMMUNICATION
+  LANGUAGES
+  LAW
+  LIFE
+  LIFESKILLS
+  MANAGEMENT
+  MARKETING
+  NATURAL
+  PERFORMINGARTS
+  PROFESSIONAL
+  SELFIMPROVEMENT
+  SOCIAL
+  SPORT
+  SUSTAINABILITY
+  TECHNOLOGY
+  TOURISM_AND_HOSPITALITY
 
 }
 
@@ -274,6 +273,7 @@ enum Schedule {
 enum Mode {
   ONLINE
   CAMPUS
+  COMBINED
 }
 
 enum Role {
