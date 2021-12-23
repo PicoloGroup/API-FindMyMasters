@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MasterProgramComment, MasterProgramLike } from '@prisma/client';
 import { PrismaService } from '../common/services/prisma.service';
-import { CommentRequest } from './models';
+import { CommentRequest } from './models/request/comment-request';
 import { FindMasterProgramRequest } from './models/request/find-request';
 import { MasterProgramResponse } from './models/response/master-programs';
 

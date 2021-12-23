@@ -261,7 +261,7 @@ export class AuthService {
 
     if (
       user !== null
-      && user.email === payload.email
+      && (user.email === payload.email || user.username === payload.username)
     ) {
       return user;
     }

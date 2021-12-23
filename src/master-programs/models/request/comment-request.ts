@@ -4,10 +4,10 @@ import {
 
 export class CommentRequest {
   @IsNotEmpty()
-  masterProgramId: number;
+  studentId: number;
 
   @IsNotEmpty()
-  studentId: number;
+  masterProgramId: number;
 
   @IsNotEmpty()
   comment: string;
