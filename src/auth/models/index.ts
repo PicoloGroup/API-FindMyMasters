@@ -2,6 +2,7 @@ export { ChangeEmailRequest } from './request/change-email.request';
 export { ChangePasswordRequest } from './request/change-password.request';
 export { CheckEmailRequest } from './request/check-email.request';
 export { LoginRequest } from './request/login.request';
+export { UniversityLoginRequest } from './request/university-login.request';
 export { ResetPasswordRequest } from './request/reset-password.request';
 export { SignupRequest } from './request/signup.request';
 

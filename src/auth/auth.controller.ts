@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Student, UniversityAdmin } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { Usr } from '../user/user.decorator';
 import {
@@ -13,8 +15,8 @@ import {
   LoginResponse,
   ResetPasswordRequest,
   SignupRequest,
+  UniversityLoginRequest,
 } from './models';
-import { UserResponse } from '../user/models';
 import { AuthUser } from './auth-user';
 
 @ApiTags('auth')
@@ -38,12 +40,6 @@ export class AuthController {
     await this.authService.studentSignup(signupRequest);
   }
 
-  @Post('university/signup')
-  @HttpCode(HttpStatus.CREATED)
-  async universitySignup(@Body() signupRequest: SignupRequest): Promise<void> {
-    await this.authService.universitySignUp(signupRequest);
-  }
-
   @Post('student/login')
   @HttpCode(HttpStatus.OK)
   async studentLogin(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
@@ -52,7 +48,7 @@ export class AuthController {
 
   @Post('university/login')
   @HttpCode(HttpStatus.OK)
-  async universityLogin(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
+  async universityLogin(@Body() loginRequest: UniversityLoginRequest): Promise<LoginResponse> {
     return new LoginResponse(await this.authService.universityLogin(loginRequest));
   }
 
@@ -60,8 +56,8 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  async getUserWithToken(@Usr() user: AuthUser): Promise<UserResponse> {
-    return UserResponse.fromUserEntity(user);
+  async getUserWithToken(@Usr() user: AuthUser): Promise<Student | UniversityAdmin | null> {
+    return this.authService.getAuthUser(user);
   }
 
   @Get('verify')
@@ -78,6 +74,9 @@ export class AuthController {
     @Usr() user: AuthUser,
       @Body() changeEmailRequest: ChangeEmailRequest,
   ): Promise<void> {
+    if (user.email === null) {
+      throw new BadRequestException();
+    }
     await this.authService.sendChangeEmailMail(
       changeEmailRequest,
       user.id,
@@ -104,6 +103,9 @@ export class AuthController {
     @Body() changePasswordRequest: ChangePasswordRequest,
       @Usr() user: AuthUser,
   ): Promise<void> {
+    if (user.email === null) {
+      throw new BadRequestException();
+    }
     await this.authService.changePassword(
       changePasswordRequest,
       user.id,
@@ -123,6 +125,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
   async resendVerificationMail(@Usr() user: AuthUser): Promise<void> {
+    if (user.email === null) {
+      throw new BadRequestException();
+    }
     await this.authService.resendVerificationMail(
       user.email,
       user.id,

@@ -38,47 +38,245 @@ model PasswordReset {
 model User {
   id                Int                @id @default(autoincrement())
   role              Role
-  email             String             @unique
+  email             String?            @unique
+  username          String?            @unique
   passwordHash      String
   emailVerified     Boolean            @default(false)
-  registrationDate  DateTime           @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
+  registrationDate  DateTime?          @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
   emailChange       EmailChange?
   emailVerification EmailVerification?
   passwordReset     PasswordReset?
   student           Student?
-  university        University?
+  universityAdmin   UniversityAdmin?
 
   @@map("user")
 }
 
 model Student {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  firstname         String? 
-  lastname          String?
-  image             String?
-  birthDate         DateTime?           @db.Date
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  firstname String?
+  lastname  String?
+  image     String?
+  birthDate DateTime? @db.Date
 
-  userId            Int                 @unique
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  likes             MasterProgramLike[]
+  comments          MasterProgramComment[]
+  quickApplications QuickApplication[]
+  recommendations   MasterProgramRecommendation[]
 
   @@map("student")
 }
 
-model University {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  name              String?             @unique
-  image             String?   
+model UniversityAdmin {
 
-  userId            Int                 @unique
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-        
+  id        Int     @id @default(autoincrement())
+  username  String? @unique
+  firstname String?
+  lastname  String?
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  universityId Int        @unique
+  university   University @relation(fields: [universityId], references: [id])
+
+  @@map("university-admin")
+}
+
+model University {
+  id    Int     @id @default(autoincrement())
+  name  String? @unique
+  image String?
+  rank  String?
+
+  cityId Int?
+  city   City? @relation(fields: [cityId], references: [id])
+
+  admin UniversityAdmin?
+
+  masterPrograms    MasterProgram[]
+  quickApplications QuickApplication[]
+
   @@map("university")
 }
 
+model City {
+
+  id                             Int     @id @default(autoincrement())
+  name                           String
+  country                        String
+  quality_of_life_index          String?
+  purchasing_power_index         String?
+  safety_index                   String?
+  health_care_index              String?
+  cost_of_living_index           String?
+  property_price_to_income_ratio String?
+  traffic_commute_time_index     String?
+  pollution_index                String?
+  climate_index                  String?
+
+  universities University[]
+
+  @@map("city")
+}
+
+model MasterProgram {
+
+  id   Int     @id @default(autoincrement())
+  name String?
+
+  // TODO: convert duration data into months
+  duration Int?
+
+  // TODO: convert languages to enum
+  language String?
+  mode     Mode?
+  schedule Schedule?
+
+  // deadline format 'dd:mm:yyyy'
+  deadline DateTime? @db.Date
+
+  field Field?
+  url   String?
+
+  tution_amount Float?
+
+  // convert current to enum
+  tution_currency String?
+
+  universityId Int?
+  university   University? @relation(fields: [universityId], references: [id])
+
+  likes             MasterProgramLike[]
+  comments          MasterProgramComment[]
+  quickApplications QuickApplication[]
+  recommendations   MasterProgramRecommendation[]
+
+
+  @@map("master-program")
+}
+
+model MasterProgramLike {
+
+  id Int @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  liked_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
+
+
+  @@map("master-program-like")
+}
+
+model MasterProgramComment {
+
+  id      Int    @id @default(autoincrement())
+  comment String
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  liked_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
+
+
+  @@map("master-program-comment")
+}
+
+model MasterProgramRecommendation {
+
+  id Int @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  recommendation_date DateTime @default(dbgenerated("timezone('UTC'::text, now())")) @db.Timestamp(6)
+
+  @@map("master-program-recommendation")
+}
+
+model QuickApplication {
+
+  id Int @id @default(autoincrement())
+
+  masterProgramId Int
+  masterProgram   MasterProgram @relation(fields: [masterProgramId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  universityId Int
+  university   University @relation(fields: [universityId], references: [id])
+
+
+  @@map("quick-application")
+}
+
+enum Field {
+
+  ADMINISTRATION
+  ARCHITECTURE
+  ART
+  AVIATION
+  BUSINESS
+  CONSTRUCTION
+  COSMETOLOGY
+  DESIGN
+  ECONOMIC
+  EDUCATION
+  ENERGY
+  ENGINEERING
+  ENVIRONMENTAL
+  FASHION
+  FOOD_AND_BEVERAGE
+  GENERAL
+  HEALTHCARE
+  HUMANITIES
+  JOURNALISM_AND_MASSCOMMUNICATION
+  LANGUAGES
+  LAW
+  LIFE
+  LIFESKILLS
+  MANAGEMENT
+  MARKETING
+  NATURAL
+  PERFORMINGARTS
+  PROFESSIONAL
+  SELFIMPROVEMENT
+  SOCIAL
+  SPORT
+  SUSTAINABILITY
+  TECHNOLOGY
+  TOURISM_AND_HOSPITALITY
+
+}
+
+enum Schedule {
+  FULLTIME
+  PARTTIME
+}
+
+// TODO: - add campus_and_online mode
+enum Mode {
+  ONLINE
+  CAMPUS
+  COMBINED
+}
 
 enum Role {
   STUDENT
-  UNIVERSITY
+  UNIVERSITYADMIN
 }
