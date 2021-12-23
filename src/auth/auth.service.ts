@@ -8,7 +8,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { nanoid } from 'nanoid';
-import { Prisma, Role } from '@prisma/client';
+import {
+  Prisma, Role, Student, UniversityAdmin, User,
+} from '@prisma/client';
 import { UserService } from '../user/user.service';
 import { JwtPayload } from './jwt-payload';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
@@ -349,5 +351,24 @@ export class AuthService {
       select: { email: true },
     });
     return user === null;
+  }
+
+  async getAuthUser(user: User) : Promise<Student | UniversityAdmin | null> {
+    if (user.role === Role.STUDENT) {
+      const student = await this.prisma.student.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      return student;
+    }
+    const univesityAdmin = await this.prisma.universityAdmin.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    return univesityAdmin;
   }
 }

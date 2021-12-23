@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MasterProgramComment, MasterProgramLike } from '@prisma/client';
 import { PrismaService } from '../common/services/prisma.service';
+import { CommentRequest } from './models';
 import { FindMasterProgramRequest } from './models/request/find-request';
 import { MasterProgramResponse } from './models/response/master-programs';
 
@@ -142,19 +143,19 @@ export class MasterProgramsService {
     return false;
   }
 
-  public async commentMasterProgram(masterProgramId: number, studentId: number, comment: string): Promise<boolean> {
+  public async commentMasterProgram(commentRequest: CommentRequest): Promise<boolean> {
     const masterProgram = await this.prisma.masterProgram.findUnique({
-      where: { id: masterProgramId },
+      where: { id: commentRequest.masterProgramId },
     });
 
     const student = await this.prisma.student.findUnique({
-      where: { id: studentId },
+      where: { id: commentRequest.studentId },
     });
 
     if (masterProgram !== null && student !== null) {
       await this.prisma.masterProgramComment.create({
         data: {
-          comment,
+          comment: commentRequest.comment,
           studentId: student.id,
           masterProgramId: masterProgram.id,
         },
