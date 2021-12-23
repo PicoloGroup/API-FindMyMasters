@@ -187,54 +187,6 @@ export class MasterProgramsService {
     return false;
   }
 
-  public async applyMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
-    const masterProgram = await this.prisma.masterProgram.findUnique({
-      where: { id: masterProgramId },
-    });
-
-    const student = await this.prisma.student.findUnique({
-      where: { id: studentId },
-    });
-
-    if (masterProgram !== null && student !== null) {
-      if (masterProgram.universityId === null) {
-        return false;
-      }
-
-      await this.prisma.quickApplication.create({
-        data: {
-          studentId: student.id,
-          masterProgramId: masterProgram.id,
-          universityId: masterProgram.universityId,
-        },
-        select: null,
-      });
-
-      return true;
-    }
-    return false;
-  }
-
-  public async unApplyMasterProgram(masterProgramId: number, studentId: number): Promise<boolean> {
-    const toDelete = await this.prisma.quickApplication.findMany({
-      where: {
-        studentId,
-        masterProgramId,
-      },
-    });
-
-    const deletedApplication = await this.prisma.quickApplication.delete({
-      where: {
-        id: toDelete[0].id,
-      },
-    });
-
-    if (deletedApplication !== null) {
-      return true;
-    }
-    return false;
-  }
-
   public async getLikesForMasterProgram(masterProgramId: number): Promise<MasterProgramLike[]> {
     const likes = await this.prisma.masterProgramLike.findMany({
       where: {
