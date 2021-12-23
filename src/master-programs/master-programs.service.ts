@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MasterProgramComment, MasterProgramLike } from '@prisma/client';
 import { PrismaService } from '../common/services/prisma.service';
+import { CommentRequest } from './models';
 import { FindMasterProgramRequest } from './models/request/find-request';
 import { MasterProgramResponse } from './models/response/master-programs';
 
@@ -28,7 +29,7 @@ export class MasterProgramsService {
     return new MasterProgramResponse(masterProgram, comments, likesCount);
   }
 
-  public async getStudentRecommendations(id: number): Promise<MastersResponse | null> {
+  public async getStudentRecommendations(id: number, page: number, limit: number): Promise<MastersResponse | null> {
     const recommended = await this.prisma.masterProgramRecommendation.findMany({
       where: {
         studentId: id,
@@ -36,6 +37,8 @@ export class MasterProgramsService {
       select: {
         masterProgramId: true,
       },
+      skip: page,
+      take: limit,
     });
 
     const recommendedIds : number[] = [];
@@ -50,19 +53,31 @@ export class MasterProgramsService {
       },
     });
 
-    const masterProgramResponses = masterPrograms.map(function getMasterPrograms(masterProgram): MasterProgramResponse {
-      return this.getMasterProgramById(masterProgram.id);
+    const masterProgramResponses: MasterProgramResponse[] = [];
+
+    masterPrograms.forEach(async (masterProgram) => {
+      const programResponse = await this.getMasterProgramById(masterProgram.id);
+
+      if (programResponse !== null) {
+        masterProgramResponses.push(programResponse);
+      }
     });
 
     return masterProgramResponses;
   }
 
-  public async getAllMasterPrograms(): Promise<MasterProgramResponse[]> {
-    const masterPrograms = await this.prisma.masterProgram.findMany();
-
-    const masterProgramResponses = masterPrograms.map(function getMasterPrograms(masterProgram): MasterProgramResponse {
-      return this.getMasterProgramById(masterProgram.id);
+  public async getAllMasterPrograms(page: number, limit: number): Promise<(MasterProgramResponse | null)[]> {
+    const masterPrograms = await this.prisma.masterProgram.findMany({
+      skip: page,
+      take: limit,
     });
+
+    const promises = masterPrograms.map(async (masterProgram) => {
+      const masterProgramResponse = await this.getMasterProgramById(masterProgram.id);
+      return masterProgramResponse;
+    });
+
+    const masterProgramResponses : (MasterProgramResponse | null)[] = await Promise.all(promises);
 
     return masterProgramResponses;
   }
@@ -128,19 +143,19 @@ export class MasterProgramsService {
     return false;
   }
 
-  public async commentMasterProgram(masterProgramId: number, studentId: number, comment: string): Promise<boolean> {
+  public async commentMasterProgram(commentRequest: CommentRequest): Promise<boolean> {
     const masterProgram = await this.prisma.masterProgram.findUnique({
-      where: { id: masterProgramId },
+      where: { id: commentRequest.masterProgramId },
     });
 
     const student = await this.prisma.student.findUnique({
-      where: { id: studentId },
+      where: { id: commentRequest.studentId },
     });
 
     if (masterProgram !== null && student !== null) {
       await this.prisma.masterProgramComment.create({
         data: {
-          comment,
+          comment: commentRequest.comment,
           studentId: student.id,
           masterProgramId: masterProgram.id,
         },
@@ -182,6 +197,10 @@ export class MasterProgramsService {
     });
 
     if (masterProgram !== null && student !== null) {
+      if (masterProgram.universityId === null) {
+        return false;
+      }
+
       await this.prisma.quickApplication.create({
         data: {
           studentId: student.id,

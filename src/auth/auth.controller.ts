@@ -4,6 +4,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Student, UniversityAdmin } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { Usr } from '../user/user.decorator';
 import {
@@ -16,7 +17,6 @@ import {
   SignupRequest,
   UniversityLoginRequest,
 } from './models';
-import { UserResponse } from '../user/models';
 import { AuthUser } from './auth-user';
 
 @ApiTags('auth')
@@ -56,9 +56,8 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  // eslint-disable-next-line class-methods-use-this
-  async getUserWithToken(@Usr() user: AuthUser): Promise<UserResponse> {
-    return UserResponse.fromUserEntity(user);
+  async getUserWithToken(@Usr() user: AuthUser): Promise<Student | UniversityAdmin | null> {
+    return this.authService.getAuthUser(user);
   }
 
   @Get('verify')
